@@ -1,0 +1,56 @@
+<div class="table-responsive col-lg-12">
+  <table class="table table-striped table-hover tablesorter blockTable">
+    <thead>
+      <tr>
+        <th>Created In</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Payable Address</th>
+        <th>Spent In</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for output in outputs %}
+    <tr>
+      <td>
+          {% if is_origin %}
+            <i class="fa fa-angle-up"></i> &nbsp;This TX
+          {% else %}
+          <a href="/transaction/{{ output.origin_tx.txid | bytes }}">
+            <i class="fa fa-angle-left"></i> {{ output.origin_tx.txid | bytes | truncate(9, True)  }}
+          </a>
+          {% endif %}
+      </td>
+      <td><span class="label label-{{ output.type_color }}">
+          <i class="fa">{{ output.type_icon | safe }}</i> {{ output.type_str }}
+      </span></td>
+      <td>{{ output.amount | currency }}</td>
+      <td>
+        {% if output.dest_address %}
+          <a href="/address/{{ output.address_str }}">{{ output.address_str }}</a></td>
+        {% else %}
+          Non-Standard Address
+        {% endif %}
+      <td>
+        {% if is_spend %}
+          <i class="fa fa-angle-up"></i> &nbsp;This TX
+        {% else %}
+          {% if output.spent_tx %}
+            <a href="/transaction/{{ output.spent_tx.txid | bytes }}">
+              {{ output.spent_tx.txid | bytes | truncate(9, True) }}
+              <i class="fa fa-angle-right"></i> 
+            </a>
+          {% else %}
+            <span class="text-muted">Unspent <i class="fa fa-angle-right"></i></span>
+          {% endif %}
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <th colspan="10">No outputs were spent in this transaction</th>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

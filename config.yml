@@ -1,0 +1,24 @@
+SQLALCHEMY_DATABASE_URI: sqlite://///Users/mark/TestLab/lincoln/abe.db
+# SQLALCHEMY_DATABASE_URI: mysql://root@127.0.0.1/abe
+# the session encryption key
+SECRET_KEY: 'somethting_really_secret'
+# connection information for the coinserver RPC
+coinserv:
+    port: 8332
+    address: 127.0.0.1
+    username: 123456
+    password: 123456
+
+currency:
+    code: "BCH"
+    name: "Bitcoin Cash"
+    algo: "scrypt"
+    address_version: [48, 3]
+    block_time: 600
+    block_mature_confirms: 120
+    trans_confirmations: 6
+
+algo:
+    hashes_per_share: 65536
+    normalize_mult: 1
+    display: "Scrypt"

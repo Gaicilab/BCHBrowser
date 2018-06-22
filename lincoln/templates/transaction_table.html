@@ -1,0 +1,42 @@
+<div class="table-responsive col-lg-12">
+  <table class="table table-striped table-hover tablesorter blockTable">
+    <thead>
+      <tr>
+        {% if not disable_time %}<th>Appeared</th>{% endif %}
+        <th>Hash</th>
+        {% if not disable_height %}<th>Blockheight</th>{% endif %}
+        <th>Total Out</th>
+        <th>Fee Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for transaction in transactions %}
+    <tr>
+      {% if not disable_time %}
+        <td>{{ transaction.block.ntime | human_date_utc }}</td>
+      {% endif %}
+      <td>
+        <a href="/transaction/{{ transaction.txid | bytes }}">{{ transaction.txid | bytes }}</a>
+      </td>
+      {% if not disable_height %}
+      <td><a href="/block/{{ transaction.block.hash | bytes }}">
+        {{ '{:,}'.format(transaction.block.height) }}
+      </a></td>
+      {% endif %}
+      <td>{{ transaction.total_out | currency }}</td>
+      <td>
+        {% if transaction.coinbase %}
+          <span class="label label-default">N/A</span>
+        {% else %}
+          {{ (transaction.total_in - transaction.total_out) | currency }}
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <th colspan="10">No transactions matching that criteria</th>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

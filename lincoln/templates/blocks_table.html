@@ -1,0 +1,28 @@
+<div class="table-responsive col-lg-12">
+  <table class="table table-striped table-hover tablesorter blockTable">
+    <thead>
+      <tr>
+        <th>Solve Time</th>
+        <th>Difficulty</th>
+        <th>Block Hash</th>
+        <th>Blockheight</th>
+        <th>Total Out</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for block in blocks %}
+    <tr>
+      <td style="max-width:135px;" data-sort-value="{{ block.timestamp }}">{{ block.ntime | human_date_utc }}</td>
+      <td>{{ '{:,}'.format(block.difficulty | round(4)) }}</td>
+      <td><a href="/block/{{ block.hash | bytes }}">{{ block.hash | bytes }}</a></td>
+      <td>{{ '{:,}'.format(block.height) }}</td>
+      <td>{{ block.total_out | currency }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <th colspan="10">No blocks matching that criteria</th>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

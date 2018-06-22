@@ -1,0 +1,23 @@
+SQLALCHEMY_DATABASE_URI: sqlite://///home/user/lincoln/lincoln/local.sqlite
+# the session encryption key
+SECRET_KEY: 'somethting_really_secret'
+# connection information for the coinserver RPC
+coinserv:
+    port: 11111
+    address: 127.0.0.1
+    username: litecoinrpc
+    password: 22222222222
+
+currency:
+    code: "LTC"
+    name: "Litecoin"
+    algo: "scrypt"
+    address_version: [48, 3]
+    block_time: 600
+    block_mature_confirms: 120
+    trans_confirmations: 6
+
+algo:
+    hashes_per_share: 65536
+    normalize_mult: 1
+    display: "Scrypt"

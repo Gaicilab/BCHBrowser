@@ -1,0 +1,70 @@
+{% if transaction %}
+  {% set title = "Transaction " + transaction.txid | bytes %}
+{% else %}
+  {% set title = "Transaction Not Found" %}
+{% endif %}
+{% extends "base.html" %}
+{% block content %}
+<div class="col-lg-12">
+  {% if transaction %}
+  {% set block = transaction.block %}
+  <h3><i class="fa fa-exchange text-primary"></i> Transaction Details</h3>
+  <div class="panel panel-default" style="background:none;">
+    <div class="table-responsive">
+      <table class="table big-table table-striped table-hover">
+        <tbody>
+          <tr>
+            <th width="30%">Appeared</th>
+            <td data-sort-value="{{ block.timestamp }}">{{ block.ntime | human_date_utc }} ({{ block.ntime }} UTC)</td>
+          </tr>
+          <tr>
+            <th>Currency</th>
+            <td>{{ block.currency }}</td>
+          </tr>
+          <tr>
+            <th>Algorithm</th>
+            <td>{{ block.algo }}</td>
+          </tr>
+          <tr>
+            <th>Coinbase Transaction</th>
+            <td>{{ transaction.coinbase }}</td>
+          </tr>
+          <tr>
+            <th>Total Value</th>
+            <td>{{ transaction.total_out | comma }} {{ block.currency }}</td>
+          </tr>
+          <tr>
+            <th>Transaction Hash</th>
+            <td><samp>{{ transaction.txid | bytes }}</samp></td>
+          </tr>
+          <tr>
+            <th>Found in</th>
+            <td><a href="/block/{{ block.hash | bytes }}">
+                  {{ block.currency }} #{{ block.height | comma }}
+                  (<samp>{{ block.hash | bytes }}</samp>)
+                </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="clearfix"></div>
+  {% else %}
+  <br>
+  <br>
+  <h3>No transaction by that identifier could be found in our database!</h3>
+  <br>
+  <br>
+  {% endif %}
+</div>
+
+<h4>Outputs Spent</h4>
+{% set outputs = transaction.spent_txs %}
+{% set is_spend = True %}
+{% include "output_table.html" %}
+<h4>Outputs Created</h4>
+{% set is_spend = False %}
+{% set is_origin = True %}
+{% set outputs = transaction.origin_txs %}
+{% include "output_table.html" %}
+{% endblock %}

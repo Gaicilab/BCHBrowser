@@ -1,0 +1,71 @@
+{% if block %}
+  {% set title = "Block #" + block.height | comma %}
+{% else %}
+  {% set title = "Block Not Found" %}
+{% endif %}
+{% extends "base.html" %}
+{% block content %}
+<div class="col-lg-12">
+  {% if block %}
+  <h3><i class="fa fa-cube text-primary"></i> Block #{{ block.height | comma }}</h3>
+  <div class="panel panel-default" style="background:none;">
+    <div class="table-responsive">
+      <table class="table big-table table-striped table-hover">
+        <tbody>
+          <tr>
+            <th width="30%">Found</th>
+            <td data-sort-value="{{ block.timestamp }}">{{ block.ntime | human_date_utc }} ({{ block.ntime }} UTC)</td>
+          </tr>
+          <tr>
+            <th>Currency</th>
+            <td>{{ block.currency }}</td>
+          </tr>
+          <tr>
+            <th>Algorithm</th>
+            <td>{{ block.algo }}</td>
+          </tr>
+          <tr>
+            <th>Total Mining Reward</th>
+            <td>{{ block.coinbase_value | comma }} {{ block.currency }}</td>
+          </tr>
+          <tr>
+            <th>Total In</th>
+            <td>{{ block.total_in | comma }} {{ block.currency }}</td>
+          </tr>
+          <tr>
+            <th>Total Out</th>
+            <td>{{ block.total_out | comma }} {{ block.currency }}</td>
+          </tr>
+          <tr>
+            <th>Difficulty</th>
+            <td>{{ block.difficulty | comma }}</td>
+          </tr>
+          <tr>
+            <th>Block Hash</th>
+            <td><samp>{{ block.hash | bytes }}</samp></td>
+          </tr>
+          <tr>
+            <th>Blockheight</th>
+            <td>{{ block.height | comma }}</td>
+          </tr>
+          <tr>
+            <th>Transaction Count</th>
+            <td>{{ block.transactions | length }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+  <br>
+  <br>
+  <center><h3>No block by that identifier could be found in our database!</h3></center>
+  <br>
+  <br>
+  {% endif %}
+</div>
+<h4>Transactions</h4>
+{% set transactions = block.transactions %}
+{% set disable_height = True %}
+{% set disable_time = True %}
+{% include "transaction_table.html" %}
+{% endblock %}
